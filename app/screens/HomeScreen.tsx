@@ -3,8 +3,62 @@ import { View, Text, TouchableOpacity, StyleSheet, Modal, TouchableWithoutFeedba
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Colors from '../constants/Colors';
 import { useAccounts } from '../AccountsContext';
+import axios from 'axios';
 
+
+const API_URL = 'https://rowdy-financials-back-end-fast.vercel.app/';
+
+const transferFunds = async (fromAccountId: string, toAccountId: string, amount: number) => {
+  try {
+    const response = await axios.post(`${API_URL}/api/v1/update/accounts/transfer`, {
+      from_account_id: fromAccountId,
+      to_account_id: toAccountId,
+      amount,
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error transferring funds:', error);
+    throw error;
+  }
+};
+
+const handleTransfer = async (fromAccountId: string, toAccountId: string, amount: number) => {
+  try {
+    const result = await transferFunds(fromAccountId, toAccountId, amount);
+    if (result.status === 'success') {
+      alert(`Transfer successful! New balances: From Account - ${result.new_from_balance}, To Account - ${result.new_to_balance}`);
+    } else {
+      alert(`Transfer failed: ${result.message}`);
+    }
+  } catch (error) {
+    alert('An error occurred during the transfer.');
+  }
+};
 const HomeScreen: React.FC = () => {
+  const handleTransferPress = async () => {
+    const amountNumber = parseFloat(amount); // Convert amount to a number
+
+    if (selectedAccount && amountNumber > 0) {
+      // Find the selected account by name
+      const fromAccount = accounts.find(acc => acc.name === selectedAccount);
+      const toAccount = accounts.find(acc => acc.name !== selectedAccount); // Assuming transfer to another account
+
+      if (fromAccount && toAccount && fromAccount.balance >= amountNumber) {
+        try {
+          await handleTransfer(fromAccount.id, toAccount.id, amountNumber);
+          updateAccountBalance(fromAccount.id, -amountNumber); // Subtract the amount from the fromAccount
+          updateAccountBalance(toAccount.id, amountNumber); // Add the amount to the toAccount
+          setAmount(''); // Clear the amount after transfer
+        } catch (error) {
+          alert('An error occurred during the transfer.');
+        }
+      } else {
+        alert(`Insufficient funds in ${selectedAccount} or no target account found.`);
+      }
+    } else {
+      alert('Please select an account and enter a valid amount.');
+    }
+  };
   const { accounts, updateAccountBalance } = useAccounts(); // Access accounts and update function from context
 
   const [selectedAccount, setSelectedAccount] = useState<string>('Checking');
