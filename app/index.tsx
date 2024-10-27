@@ -11,11 +11,13 @@ import { Ionicons } from '@expo/vector-icons';
 import HomeScreen from './screens/HomeScreen';
 import AccountsScreen from './screens/AccountsScreen';
 import ProfileScreen from './screens/ProfileScreen';
+import TransactionScreen from './screens/TransactionScreen';
 
 export type RootTabParamList = {
   Home: undefined;
   Accounts: undefined;
   Profile: undefined;
+  Transaction: undefined;
 };
 
 const Tab = createBottomTabNavigator<RootTabParamList>();
@@ -68,6 +70,8 @@ const App: React.FC = () => {
                     iconName = 'wallet-outline';
                   } else if (route.name === 'Profile') {
                     iconName = 'person-outline';
+                  }else if (route.name === 'Transaction') {
+                    iconName = 'swap-horizontal-outline';
                   }
 
                   return <Ionicons name={iconName} size={size} color={color} />;
@@ -76,6 +80,7 @@ const App: React.FC = () => {
             >
               <Tab.Screen name="Home" component={HomeScreen} options={{ title: 'Home' }} />
               <Tab.Screen name="Accounts" component={AccountsScreen} options={{ title: 'Accounts' }} />
+              <Tab.Screen name="Transaction" component={TransactionScreen} options={{ title: 'Transaction' }} />
               <Tab.Screen name="Profile" component={ProfileScreen} options={{ title: 'Profile' }} />
             </Tab.Navigator>
           </NavigationContainer>
