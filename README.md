@@ -16,4 +16,5 @@ This is an [Expo](https://expo.dev) project created with [`create-expo-app`](htt
     npx expo start
    ```
 
-Backend is essentially implemented. We only need to attach he authentication page to the API, then it'll be complete.
+Backend is essentially implemented. We only need to attach the authentication page to the API, then it'll be complete.
+https://rowdy-financials-back-end-fast.vercel.app/
