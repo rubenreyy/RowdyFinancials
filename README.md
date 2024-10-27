@@ -18,3 +18,5 @@ This is an [Expo](https://expo.dev) project created with [`create-expo-app`](htt
 
 Backend is essentially implemented. We only need to attach the authentication page to the API, then it'll be complete.
 https://rowdy-financials-back-end-fast.vercel.app/
+
+https://github.com/Cnasty07/RowdyFinancialsBackEnd_FAST
